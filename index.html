@@ -3372,7 +3372,25 @@ document.addEventListener("keydown",function(e){
 cargarTema();
 
 renderTodo();
-
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+function generarPDF(){
+ var J = window.jspdf.jsPDF;
+ var d = new J();
+ var f = new Date().toLocaleString('es-MX');
+ d.text('Mi Negocio Facil - ' + f, 10, 15);
+ var y=25;
+ function v(i){ var e=document.getElementById(i); return e?e.innerText:'0'; }
+ d.text('Vendido: '+v('reporteVentas'),10,y); y+=10;
+ d.text('Cobrado: '+v('reporteCobrado'),10,y); y+=10;
+ d.text('Fiado: '+v('reportePendiente'),10,y); y+=10;
+ d.text('Gastos: '+v('reporteGastos'),10,y); y+=10;
+ d.text('Ganancia: '+v('reporteGanancia'),10,y);
+ d.save('reporte.pdf');
+ alert('PDF en Descargas listo para WhatsApp');
+}
+window.print = generarPDF;
 </script>
 
 </body>

@@ -1,0 +1,8 @@
+{
+  "appId": "com.minegociofacil.app",
+  "appName": "Mi Negocio Fácil",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

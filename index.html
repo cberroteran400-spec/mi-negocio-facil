@@ -1,0 +1,3379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Mi Negocio Fácil — Control de ventas, clientes y fiado</title>
+
+<meta name="description" content="Controla ventas, clientes, productos, gastos y fiados de tu negocio fácilmente desde tu celular.">
+<meta name="theme-color" content="#111827">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#f3f4f6;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --green:#16a34a;
+    --red:#dc2626;
+    --orange:#ea580c;
+    --purple:#7c3aed;
+    --shadow:0 8px 25px rgba(0,0,0,.07);
+}
+
+body.dark{
+    --bg:#0f172a;
+    --card:#1e293b;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --border:#334155;
+    --shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    padding:14px 16px;
+}
+
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:var(--primary);
+}
+
+.header-actions{
+    display:flex;
+    gap:7px;
+}
+
+.icon-btn{
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--text);
+    width:40px;
+    height:40px;
+    border-radius:12px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:18px 14px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    border-radius:22px;
+    padding:25px 20px;
+    margin-bottom:18px;
+    box-shadow:var(--shadow);
+}
+
+.hero h1{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    opacity:.92;
+    line-height:1.5;
+}
+
+.grid{
+    display:grid;
+    gap:12px;
+}
+
+.stats{
+    grid-template-columns:repeat(2,1fr);
+    margin-bottom:18px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:17px;
+    box-shadow:var(--shadow);
+}
+
+.stat .label{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.stat .value{
+    font-size:23px;
+    font-weight:800;
+}
+
+.green{
+    color:var(--green);
+}
+
+.red{
+    color:var(--red);
+}
+
+.orange{
+    color:var(--orange);
+}
+
+.blue{
+    color:var(--primary);
+}
+
+.purple{
+    color:var(--purple);
+}
+
+.nav{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:4px 0 14px;
+    scrollbar-width:none;
+}
+
+.nav::-webkit-scrollbar{
+    display:none;
+}
+
+.nav button{
+    flex:none;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:700;
+}
+
+.nav button.active{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    margin-bottom:14px;
+}
+
+.card h2{
+    font-size:19px;
+    margin-bottom:14px;
+}
+
+.card h3{
+    margin-bottom:7px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+}
+
+.field label{
+    display:block;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:6px;
+    font-weight:700;
+}
+
+.field input,
+.field select{
+    width:100%;
+    padding:13px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--text);
+    border-radius:12px;
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:var(--primary);
+}
+
+.btn{
+    border:none;
+    padding:12px 15px;
+    border-radius:12px;
+    font-weight:800;
+    transition:.15s;
+}
+
+.btn:active{
+    transform:scale(.98);
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:white;
+}
+
+.btn-primary:hover{
+    background:var(--primary-dark);
+}
+
+.btn-green{
+    background:var(--green);
+    color:white;
+}
+
+.btn-red{
+    background:var(--red);
+    color:white;
+}
+
+.btn-orange{
+    background:var(--orange);
+    color:white;
+}
+
+.btn-gray{
+    background:var(--bg);
+    color:var(--text);
+    border:1px solid var(--border);
+}
+
+.btn-purple{
+    background:var(--purple);
+    color:white;
+}
+
+.btn-full{
+    width:100%;
+}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:13px;
+}
+
+.search{
+    margin-bottom:13px;
+}
+
+.search input{
+    width:100%;
+    padding:13px;
+    border-radius:13px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+}
+
+.list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.item{
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:14px;
+    background:var(--card);
+}
+
+.item-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:flex-start;
+}
+
+.item-title{
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.item-meta{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+.item-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:10px;
+}
+
+.small-btn{
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--text);
+    border-radius:9px;
+    padding:7px 10px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.empty{
+    text-align:center;
+    color:var(--muted);
+    padding:25px 10px;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.badge-green{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.badge-red{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.badge-blue{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+.badge-orange{
+    background:#ffedd5;
+    color:#9a3412;
+}
+
+body.dark .badge-green{
+    background:#14532d;
+    color:#bbf7d0;
+}
+
+body.dark .badge-red{
+    background:#7f1d1d;
+    color:#fecaca;
+}
+
+body.dark .badge-blue{
+    background:#1e3a8a;
+    color:#bfdbfe;
+}
+
+body.dark .badge-orange{
+    background:#7c2d12;
+    color:#fed7aa;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:500px;
+}
+
+th,
+td{
+    text-align:left;
+    padding:11px 8px;
+    border-bottom:1px solid var(--border);
+    font-size:13px;
+}
+
+th{
+    color:var(--muted);
+}
+
+.progress{
+    height:10px;
+    background:var(--bg);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-bar{
+    height:100%;
+    background:var(--primary);
+    width:0%;
+}
+
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:100;
+    background:var(--card);
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:center;
+}
+
+.bottom-inner{
+    max-width:700px;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+}
+
+.bottom-nav button{
+    border:none;
+    background:none;
+    color:var(--muted);
+    padding:9px 3px 10px;
+    font-size:11px;
+}
+
+.bottom-nav button.active{
+    color:var(--primary);
+    font-weight:800;
+}
+
+.bottom-nav .emoji{
+    display:block;
+    font-size:20px;
+    margin-bottom:2px;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    z-index:500;
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:650px;
+    max-height:92vh;
+    overflow-y:auto;
+    background:var(--card);
+    color:var(--text);
+    border-radius:22px 22px 0 0;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.close{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    background:var(--bg);
+    color:var(--text);
+}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:85px;
+    transform:translateX(-50%) translateY(20px);
+    background:#111827;
+    color:white;
+    padding:12px 17px;
+    border-radius:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:1000;
+    max-width:90%;
+    text-align:center;
+    font-size:14px;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+.kpi{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.kpi:last-child{
+    border-bottom:none;
+}
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.quick{
+    padding:17px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    border-radius:15px;
+    color:var(--text);
+    text-align:left;
+    font-weight:800;
+}
+
+.quick span{
+    display:block;
+    font-size:25px;
+    margin-bottom:7px;
+}
+
+.notice{
+    background:#eff6ff;
+    color:#1e3a8a;
+    padding:12px;
+    border-radius:12px;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:12px;
+}
+
+body.dark .notice{
+    background:#172554;
+    color:#bfdbfe;
+}
+
+@media(min-width:700px){
+    .stats{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .form-grid.two{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .modal{
+        align-items:center;
+        padding:20px;
+    }
+
+    .modal-box{
+        border-radius:22px;
+    }
+}
+
+@media print{
+    body{
+        background:white!important;
+        color:black!important;
+        padding:0;
+    }
+
+    .header,
+    .nav,
+    .bottom-nav,
+    .hero,
+    .actions,
+    button,
+    .search{
+        display:none!important;
+    }
+
+    .section{
+        display:none!important;
+    }
+
+    .section.active{
+        display:block!important;
+    }
+
+    .card,
+    .stat,
+    .item{
+        box-shadow:none!important;
+        color:black!important;
+        border:1px solid #ddd!important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <div class="logo">💼 Mi Negocio <span>Fácil</span></div>
+
+        <div class="header-actions">
+            <button class="icon-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
+            <button class="icon-btn" onclick="abrirConfiguracion()" title="Configuración">⚙️</button>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+<section id="inicio" class="section active">
+
+    <div class="hero">
+        <h1>Tu negocio, en tu celular.</h1>
+        <p>
+            Controla ventas, clientes, productos, gastos y fiados
+            sin complicaciones.
+        </p>
+    </div>
+
+    <div class="grid stats">
+
+        <div class="stat">
+            <div class="label">Ventas</div>
+            <div class="value blue" id="totalVentas">$0.00</div>
+        </div>
+
+        <div class="stat">
+            <div class="label">Cobrado</div>
+            <div class="value green" id="totalCobrado">$0.00</div>
+        </div>
+
+        <div class="stat">
+            <div class="label">Por cobrar</div>
+            <div class="value orange" id="totalPendiente">$0.00</div>
+        </div>
+
+        <div class="stat">
+            <div class="label">Gastos</div>
+            <div class="value red" id="totalGastos">$0.00</div>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <h2>Acciones rápidas</h2>
+
+        <div class="quick-grid">
+
+            <button class="quick" onclick="abrirVenta()">
+                <span>💰</span>
+                Nueva venta
+            </button>
+
+            <button class="quick" onclick="abrirCliente()">
+                <span>👤</span>
+                Nuevo cliente
+            </button>
+
+            <button class="quick" onclick="abrirProducto()">
+                <span>📦</span>
+                Nuevo producto
+            </button>
+
+            <button class="quick" onclick="abrirGasto()">
+                <span>💸</span>
+                Registrar gasto
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Resumen del negocio</h2>
+
+        <div class="kpi">
+            <span>Clientes registrados</span>
+            <strong id="cantidadClientes">0</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Productos registrados</span>
+            <strong id="cantidadProductos">0</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Ventas realizadas</span>
+            <strong id="cantidadVentas">0</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Ganancia estimada</span>
+            <strong class="green" id="gananciaEstimada">$0.00</strong>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <h2>Últimos movimientos</h2>
+        <div id="ultimosMovimientos" class="list"></div>
+    </div>
+
+</section>
+
+
+<section id="ventas" class="section">
+
+    <div class="card">
+        <h2>💰 Ventas</h2>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="abrirVenta()">
+                + Nueva venta
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+
+        <div class="search">
+            <input
+                type="search"
+                id="buscarVenta"
+                placeholder="Buscar venta..."
+                oninput="renderVentas()"
+            >
+        </div>
+
+        <div id="listaVentas" class="list"></div>
+
+    </div>
+
+</section>
+
+
+<section id="clientes" class="section">
+
+    <div class="card">
+        <h2>👥 Clientes</h2>
+
+        <button class="btn btn-primary btn-full" onclick="abrirCliente()">
+            + Agregar cliente
+        </button>
+    </div>
+
+    <div class="card">
+
+        <div class="search">
+            <input
+                type="search"
+                id="buscarCliente"
+                placeholder="Buscar cliente..."
+                oninput="renderClientes()"
+            >
+        </div>
+
+        <div id="listaClientes" class="list"></div>
+
+    </div>
+
+</section>
+
+
+<section id="productos" class="section">
+
+    <div class="card">
+        <h2>📦 Productos</h2>
+
+        <button class="btn btn-primary btn-full" onclick="abrirProducto()">
+            + Agregar producto
+        </button>
+    </div>
+
+    <div class="card">
+
+        <div class="search">
+            <input
+                type="search"
+                id="buscarProducto"
+                placeholder="Buscar producto..."
+                oninput="renderProductos()"
+            >
+        </div>
+
+        <div id="listaProductos" class="list"></div>
+
+    </div>
+
+</section>
+
+
+<section id="gastos" class="section">
+
+    <div class="card">
+        <h2>💸 Gastos</h2>
+
+        <button class="btn btn-red btn-full" onclick="abrirGasto()">
+            + Registrar gasto
+        </button>
+    </div>
+
+    <div class="card">
+        <div id="listaGastos" class="list"></div>
+    </div>
+
+</section>
+
+
+<section id="reportes" class="section">
+
+    <div class="card">
+        <h2>📊 Reportes</h2>
+
+        <div class="kpi">
+            <span>Total vendido</span>
+            <strong id="reporteVentas">$0.00</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Total cobrado</span>
+            <strong class="green" id="reporteCobrado">$0.00</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Fiado pendiente</span>
+            <strong class="orange" id="reportePendiente">$0.00</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Total gastos</span>
+            <strong class="red" id="reporteGastos">$0.00</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Ganancia estimada</span>
+            <strong class="green" id="reporteGanancia">$0.00</strong>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-gray" onclick="window.print()">
+                🖨️ Imprimir / PDF
+            </button>
+
+            <button class="btn btn-primary" onclick="exportarDatos()">
+                💾 Copia de seguridad
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📅 Resumen por fecha</h2>
+
+        <div class="form-grid two">
+
+            <div class="field">
+                <label>Desde</label>
+                <input type="date" id="fechaDesde" onchange="renderReporteFechas()">
+            </div>
+
+            <div class="field">
+                <label>Hasta</label>
+                <input type="date" id="fechaHasta" onchange="renderReporteFechas()">
+            </div>
+
+        </div>
+
+        <div id="resultadoFechas" style="margin-top:15px;"></div>
+    </div>
+
+</section>
+
+</main>
+
+
+<nav class="bottom-nav">
+    <div class="bottom-inner">
+
+        <button class="active" data-section="inicio" onclick="mostrarSeccion('inicio',this)">
+            <span class="emoji">🏠</span>
+            Inicio
+        </button>
+
+        <button data-section="ventas" onclick="mostrarSeccion('ventas',this)">
+            <span class="emoji">💰</span>
+            Ventas
+        </button>
+
+        <button data-section="clientes" onclick="mostrarSeccion('clientes',this)">
+            <span class="emoji">👥</span>
+            Clientes
+        </button>
+
+        <button data-section="productos" onclick="mostrarSeccion('productos',this)">
+            <span class="emoji">📦</span>
+            Productos
+        </button>
+
+        <button data-section="reportes" onclick="mostrarSeccion('reportes',this)">
+            <span class="emoji">📊</span>
+            Reportes
+        </button>
+
+    </div>
+</nav>
+
+
+<!-- MODAL CLIENTE -->
+
+<div id="modalCliente" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2 id="tituloCliente">Nuevo cliente</h2>
+            <button class="close" onclick="cerrarModal('modalCliente')">✕</button>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Nombre *</label>
+                <input id="clienteNombre" placeholder="Ej. Juan Pérez">
+            </div>
+
+            <div class="field">
+                <label>Teléfono</label>
+                <input id="clienteTelefono" inputmode="tel" placeholder="Ej. 5512345678">
+            </div>
+
+            <div class="field">
+                <label>Notas</label>
+                <input id="clienteNotas" placeholder="Información adicional">
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary btn-full" onclick="guardarCliente()">
+                Guardar cliente
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- MODAL PRODUCTO -->
+
+<div id="modalProducto" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2 id="tituloProducto">Nuevo producto</h2>
+            <button class="close" onclick="cerrarModal('modalProducto')">✕</button>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Nombre *</label>
+                <input id="productoNombre" placeholder="Ej. Refresco 600 ml">
+            </div>
+
+            <div class="field">
+                <label>Precio de venta *</label>
+                <input id="productoPrecio" type="number" step="0.01" min="0" placeholder="0.00">
+            </div>
+
+            <div class="field">
+                <label>Costo del producto</label>
+                <input id="productoCosto" type="number" step="0.01" min="0" placeholder="0.00">
+            </div>
+
+            <div class="field">
+                <label>Existencia</label>
+                <input id="productoStock" type="number" step="1" min="0" placeholder="0">
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary btn-full" onclick="guardarProducto()">
+                Guardar producto
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- MODAL VENTA -->
+
+<div id="modalVenta" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Nueva venta</h2>
+            <button class="close" onclick="cerrarModal('modalVenta')">✕</button>
+        </div>
+
+        <div class="notice">
+            Puedes vender un producto registrado o escribir una venta manual.
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Producto registrado</label>
+                <select id="ventaProducto" onchange="seleccionarProductoVenta()">
+                    <option value="">Venta manual</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Descripción *</label>
+                <input id="ventaDescripcion" placeholder="Ej. Servicio de pintura">
+            </div>
+
+            <div class="field">
+                <label>Precio total *</label>
+                <input id="ventaTotal" type="number" step="0.01" min="0" placeholder="0.00">
+            </div>
+
+            <div class="field">
+                <label>Tipo de pago</label>
+                <select id="ventaTipo" onchange="cambiarTipoVenta()">
+                    <option value="contado">Contado</option>
+                    <option value="fiado">Fiado</option>
+                </select>
+            </div>
+
+            <div class="field" id="campoClienteVenta" style="display:none;">
+                <label>Cliente *</label>
+                <select id="ventaCliente">
+                    <option value="">Seleccionar cliente</option>
+                </select>
+            </div>
+
+            <div class="field" id="campoPagoInicial" style="display:none;">
+                <label>Pago inicial</label>
+                <input id="ventaPagoInicial" type="number" step="0.01" min="0" value="0">
+            </div>
+
+            <div class="field">
+                <label>Costo del producto / trabajo</label>
+                <input id="ventaCosto" type="number" step="0.01" min="0" value="0">
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-green btn-full" onclick="guardarVenta()">
+                Registrar venta
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- MODAL PAGO -->
+
+<div id="modalPago" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Registrar pago</h2>
+            <button class="close" onclick="cerrarModal('modalPago')">✕</button>
+        </div>
+
+        <div id="infoPago" class="notice"></div>
+
+        <div class="field">
+            <label>Cantidad recibida</label>
+            <input id="pagoCantidad" type="number" step="0.01" min="0">
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-green btn-full" onclick="guardarPago()">
+                Registrar pago
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- MODAL GASTO -->
+
+<div id="modalGasto" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Registrar gasto</h2>
+            <button class="close" onclick="cerrarModal('modalGasto')">✕</button>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Descripción *</label>
+                <input id="gastoDescripcion" placeholder="Ej. Compra de material">
+            </div>
+
+            <div class="field">
+                <label>Cantidad *</label>
+                <input id="gastoCantidad" type="number" step="0.01" min="0">
+            </div>
+
+            <div class="field">
+                <label>Categoría</label>
+                <select id="gastoCategoria">
+                    <option>Material</option>
+                    <option>Transporte</option>
+                    <option>Renta</option>
+                    <option>Servicios</option>
+                    <option>Publicidad</option>
+                    <option>Comida</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-red btn-full" onclick="guardarGasto()">
+                Registrar gasto
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- MODAL CONFIG -->
+
+<div id="modalConfig" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>⚙️ Configuración</h2>
+            <button class="close" onclick="cerrarModal('modalConfig')">✕</button>
+        </div>
+
+        <div class="card" style="margin-top:0;">
+            <h3>Negocio</h3>
+
+            <div class="field">
+                <label>Nombre del negocio</label>
+                <input id="nombreNegocio">
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary btn-full" onclick="guardarConfiguracion()">
+                    Guardar
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>💾 Copias de seguridad</h3>
+
+            <p class="item-meta" style="margin-bottom:10px;">
+                Guarda una copia de todos tus clientes, productos, ventas y gastos.
+            </p>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="exportarDatos()">
+                    Exportar
+                </button>
+
+                <button class="btn btn-gray" onclick="document.getElementById('archivoImportar').click()">
+                    Importar
+                </button>
+
+                <input
+                    type="file"
+                    id="archivoImportar"
+                    accept=".json,application/json"
+                    style="display:none"
+                    onchange="importarDatos(event)"
+                >
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>⚠️ Zona de peligro</h3>
+
+            <p class="item-meta" style="margin-bottom:10px;">
+                Esto elimina todos los datos guardados en este dispositivo.
+            </p>
+
+            <button class="btn btn-red btn-full" onclick="borrarTodo()">
+                Borrar todos los datos
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+"use strict";
+
+/* =========================================================
+   MI NEGOCIO FÁCIL
+   Aplicación local sin servidor
+========================================================= */
+
+const STORAGE_KEY = "mi_negocio_facil_v1";
+
+let datos = cargarDatos();
+
+let editandoCliente = null;
+let editandoProducto = null;
+let ventaPagoId = null;
+
+
+/* =========================================================
+   DATOS
+========================================================= */
+
+function datosIniciales(){
+
+    return {
+        negocio:{
+            nombre:"Mi Negocio Fácil",
+            moneda:"MXN"
+        },
+
+        clientes:[],
+
+        productos:[],
+
+        ventas:[],
+
+        pagos:[],
+
+        gastos:[]
+    };
+}
+
+
+function cargarDatos(){
+
+    try{
+
+        const guardado = localStorage.getItem(STORAGE_KEY);
+
+        if(!guardado){
+            return datosIniciales();
+        }
+
+        const obj = JSON.parse(guardado);
+
+        return {
+            negocio: obj.negocio || {
+                nombre:"Mi Negocio Fácil",
+                moneda:"MXN"
+            },
+
+            clientes:Array.isArray(obj.clientes) ? obj.clientes : [],
+
+            productos:Array.isArray(obj.productos) ? obj.productos : [],
+
+            ventas:Array.isArray(obj.ventas) ? obj.ventas : [],
+
+            pagos:Array.isArray(obj.pagos) ? obj.pagos : [],
+
+            gastos:Array.isArray(obj.gastos) ? obj.gastos : []
+        };
+
+    }catch(error){
+
+        console.error(error);
+
+        return datosIniciales();
+    }
+}
+
+
+function guardarDatos(){
+
+    try{
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(datos)
+        );
+
+    }catch(error){
+
+        alert(
+            "No se pudieron guardar los datos. " +
+            "Es posible que el almacenamiento del navegador esté lleno."
+        );
+    }
+}
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+function id(){
+
+    return Date.now().toString(36) +
+        Math.random().toString(36).substring(2,9);
+}
+
+
+function dinero(numero){
+
+    const valor = Number(numero) || 0;
+
+    return valor.toLocaleString("es-MX",{
+        style:"currency",
+        currency:"MXN"
+    });
+}
+
+
+function numero(valor){
+
+    const n = Number(valor);
+
+    return Number.isFinite(n) ? n : 0;
+}
+
+
+function escapar(texto){
+
+    return String(texto ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function fechaActual(){
+
+    const d = new Date();
+
+    return d.toISOString();
+}
+
+
+function fechaTexto(fecha){
+
+    if(!fecha) return "";
+
+    const d = new Date(fecha);
+
+    if(Number.isNaN(d.getTime())) return "";
+
+    return d.toLocaleString("es-MX",{
+        dateStyle:"medium",
+        timeStyle:"short"
+    });
+}
+
+
+function soloFecha(fecha){
+
+    const d = new Date(fecha);
+
+    if(Number.isNaN(d.getTime())) return "";
+
+    return d.toISOString().slice(0,10);
+}
+
+
+function clientePorId(clienteId){
+
+    return datos.clientes.find(c => c.id === clienteId);
+}
+
+
+function productoPorId(productoId){
+
+    return datos.productos.find(p => p.id === productoId);
+}
+
+
+function pagosDeVenta(ventaId){
+
+    return datos.pagos.filter(p => p.ventaId === ventaId);
+}
+
+
+function totalPagadoVenta(venta){
+
+    return pagosDeVenta(venta.id)
+        .reduce((sum,p) => sum + numero(p.cantidad),0);
+}
+
+
+function pendienteVenta(venta){
+
+    return Math.max(
+        0,
+        numero(venta.total) - totalPagadoVenta(venta)
+    );
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function mostrarSeccion(nombre, boton){
+
+    document.querySelectorAll(".section")
+        .forEach(s => s.classList.remove("active"));
+
+    const seccion = document.getElementById(nombre);
+
+    if(seccion){
+        seccion.classList.add("active");
+    }
+
+    document.querySelectorAll(".bottom-nav button")
+        .forEach(b => b.classList.remove("active"));
+
+    if(boton){
+        boton.classList.add("active");
+    }else{
+
+        const btn = document.querySelector(
+            `.bottom-nav button[data-section="${nombre}"]`
+        );
+
+        if(btn){
+            btn.classList.add("active");
+        }
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+    if(nombre === "ventas") renderVentas();
+    if(nombre === "clientes") renderClientes();
+    if(nombre === "productos") renderProductos();
+    if(nombre === "gastos") renderGastos();
+    if(nombre === "reportes") renderReportes();
+}
+
+
+function cerrarModal(idModal){
+
+    document.getElementById(idModal)
+        .classList.remove("show");
+}
+
+
+function abrirModal(idModal){
+
+    document.getElementById(idModal)
+        .classList.add("show");
+}
+
+
+/* =========================================================
+   CLIENTES
+========================================================= */
+
+function abrirCliente(clienteId = null){
+
+    editandoCliente = clienteId;
+
+    document.getElementById("clienteNombre").value = "";
+    document.getElementById("clienteTelefono").value = "";
+    document.getElementById("clienteNotas").value = "";
+
+    document.getElementById("tituloCliente").textContent =
+        clienteId ? "Editar cliente" : "Nuevo cliente";
+
+    if(clienteId){
+
+        const c = clientePorId(clienteId);
+
+        if(c){
+
+            document.getElementById("clienteNombre").value = c.nombre || "";
+            document.getElementById("clienteTelefono").value = c.telefono || "";
+            document.getElementById("clienteNotas").value = c.notas || "";
+        }
+    }
+
+    abrirModal("modalCliente");
+}
+
+
+function guardarCliente(){
+
+    const nombre =
+        document.getElementById("clienteNombre").value.trim();
+
+    const telefono =
+        document.getElementById("clienteTelefono").value.trim();
+
+    const notas =
+        document.getElementById("clienteNotas").value.trim();
+
+    if(!nombre){
+
+        mostrarToast("Escribe el nombre del cliente.");
+
+        return;
+    }
+
+    if(editandoCliente){
+
+        const c = clientePorId(editandoCliente);
+
+        if(c){
+
+            c.nombre = nombre;
+            c.telefono = telefono;
+            c.notas = notas;
+        }
+
+        mostrarToast("Cliente actualizado.");
+
+    }else{
+
+        datos.clientes.unshift({
+            id:id(),
+            nombre,
+            telefono,
+            notas,
+            creado:fechaActual()
+        });
+
+        mostrarToast("Cliente agregado.");
+    }
+
+    guardarDatos();
+
+    cerrarModal("modalCliente");
+
+    renderTodo();
+}
+
+
+function renderClientes(){
+
+    const contenedor =
+        document.getElementById("listaClientes");
+
+    const buscar =
+        (document.getElementById("buscarCliente")?.value || "")
+        .toLowerCase()
+        .trim();
+
+    let clientes = datos.clientes;
+
+    if(buscar){
+
+        clientes = clientes.filter(c =>
+            `${c.nombre} ${c.telefono} ${c.notas}`
+                .toLowerCase()
+                .includes(buscar)
+        );
+    }
+
+    if(!clientes.length){
+
+        contenedor.innerHTML = `
+            <div class="empty">
+                No hay clientes registrados.
+            </div>
+        `;
+
+        return;
+    }
+
+    contenedor.innerHTML = clientes.map(c => {
+
+        const deuda = datos.ventas
+            .filter(v => v.clienteId === c.id)
+            .reduce((sum,v) => sum + pendienteVenta(v),0);
+
+        const telefonoLimpio =
+            String(c.telefono || "").replace(/\D/g,"");
+
+        return `
+            <div class="item">
+
+                <div class="item-top">
+
+                    <div>
+                        <div class="item-title">
+                            👤 ${escapar(c.nombre)}
+                        </div>
+
+                        <div class="item-meta">
+                            ${c.telefono ? "📱 " + escapar(c.telefono) : ""}
+                            ${c.notas ? "<br>📝 " + escapar(c.notas) : ""}
+                        </div>
+                    </div>
+
+                    <strong class="${deuda > 0 ? "orange" : "green"}">
+                        ${dinero(deuda)}
+                    </strong>
+
+                </div>
+
+                <div class="item-buttons">
+
+                    <button class="small-btn"
+                        onclick="abrirCliente('${c.id}')">
+                        Editar
+                    </button>
+
+                    ${
+                        deuda > 0
+                        ? `
+                        <button class="small-btn"
+                            onclick="verDeudaCliente('${c.id}')">
+                            Ver deuda
+                        </button>
+                        `
+                        : ""
+                    }
+
+                    ${
+                        telefonoLimpio
+                        ? `
+                        <button class="small-btn"
+                            onclick="whatsappCliente('${c.id}')">
+                            WhatsApp
+                        </button>
+                        `
+                        : ""
+                    }
+
+                    <button class="small-btn"
+                        onclick="eliminarCliente('${c.id}')">
+                        Eliminar
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+function eliminarCliente(clienteId){
+
+    const c = clientePorId(clienteId);
+
+    if(!c) return;
+
+    const tieneVentas =
+        datos.ventas.some(v => v.clienteId === clienteId);
+
+    if(tieneVentas){
+
+        mostrarToast(
+            "No puedes eliminar un cliente que tiene ventas registradas."
+        );
+
+        return;
+    }
+
+    if(!confirm(`¿Eliminar a ${c.nombre}?`)) return;
+
+    datos.clientes =
+        datos.clientes.filter(c => c.id !== clienteId);
+
+    guardarDatos();
+
+    renderTodo();
+
+    mostrarToast("Cliente eliminado.");
+}
+
+
+function verDeudaCliente(clienteId){
+
+    const c = clientePorId(clienteId);
+
+    if(!c) return;
+
+    const ventas =
+        datos.ventas.filter(v =>
+            v.clienteId === clienteId &&
+            pendienteVenta(v) > 0
+        );
+
+    if(!ventas.length){
+
+        mostrarToast("Este cliente no tiene deuda.");
+
+        return;
+    }
+
+    let html = `
+        <div class="modal-header">
+            <h2>Deuda de ${escapar(c.nombre)}</h2>
+            <button class="close" onclick="cerrarModal('modalPago')">✕</button>
+        </div>
+    `;
+
+    ventas.forEach(v => {
+
+        const pendiente = pendienteVenta(v);
+
+        html += `
+            <div class="item" style="margin-bottom:10px;">
+
+                <div class="item-title">
+                    ${escapar(v.descripcion)}
+                </div>
+
+                <div class="item-meta">
+                    Fecha: ${fechaTexto(v.fecha)}<br>
+                    Total: ${dinero(v.total)}<br>
+                    Pagado: ${dinero(totalPagadoVenta(v))}
+                </div>
+
+                <div style="margin-top:8px;">
+                    <strong class="orange">
+                        Pendiente: ${dinero(pendiente)}
+                    </strong>
+                </div>
+
+                <div class="item-buttons">
+
+                    <button class="small-btn"
+                        onclick="abrirPago('${v.id}')">
+                        Registrar pago
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+    });
+
+    document.getElementById("infoPago").innerHTML = html;
+
+    document.getElementById("pagoCantidad").value = "";
+
+    abrirModal("modalPago");
+}
+
+
+function whatsappCliente(clienteId){
+
+    const c = clientePorId(clienteId);
+
+    if(!c || !c.telefono) return;
+
+    const deuda =
+        datos.ventas
+        .filter(v => v.clienteId === clienteId)
+        .reduce((sum,v) => sum + pendienteVenta(v),0);
+
+    if(deuda <= 0){
+
+        mostrarToast("Este cliente no tiene deuda.");
+
+        return;
+    }
+
+    let telefono =
+        String(c.telefono).replace(/\D/g,"");
+
+    if(telefono.length === 10){
+        telefono = "52" + telefono;
+    }
+
+    const mensaje =
+        `Hola ${c.nombre}, te comparto un recordatorio de tu saldo pendiente de ${dinero(deuda)}. Gracias.`;
+
+    const url =
+        "https://wa.me/" +
+        telefono +
+        "?text=" +
+        encodeURIComponent(mensaje);
+
+    window.open(url,"_blank");
+}
+
+
+/* =========================================================
+   PRODUCTOS
+========================================================= */
+
+function abrirProducto(productoId = null){
+
+    editandoProducto = productoId;
+
+    document.getElementById("productoNombre").value = "";
+    document.getElementById("productoPrecio").value = "";
+    document.getElementById("productoCosto").value = "";
+    document.getElementById("productoStock").value = "";
+
+    document.getElementById("tituloProducto").textContent =
+        productoId ? "Editar producto" : "Nuevo producto";
+
+    if(productoId){
+
+        const p = productoPorId(productoId);
+
+        if(p){
+
+            document.getElementById("productoNombre").value = p.nombre || "";
+            document.getElementById("productoPrecio").value = p.precio || "";
+            document.getElementById("productoCosto").value = p.costo || "";
+            document.getElementById("productoStock").value = p.stock || "";
+        }
+    }
+
+    abrirModal("modalProducto");
+}
+
+
+function guardarProducto(){
+
+    const nombre =
+        document.getElementById("productoNombre").value.trim();
+
+    const precio =
+        numero(document.getElementById("productoPrecio").value);
+
+    const costo =
+        numero(document.getElementById("productoCosto").value);
+
+    const stock =
+        Math.max(
+            0,
+            Math.floor(
+                numero(document.getElementById("productoStock").value)
+            )
+        );
+
+    if(!nombre){
+
+        mostrarToast("Escribe el nombre del producto.");
+
+        return;
+    }
+
+    if(precio <= 0){
+
+        mostrarToast("El precio debe ser mayor a $0.");
+
+        return;
+    }
+
+    if(editandoProducto){
+
+        const p = productoPorId(editandoProducto);
+
+        if(p){
+
+            p.nombre = nombre;
+            p.precio = precio;
+            p.costo = costo;
+            p.stock = stock;
+        }
+
+        mostrarToast("Producto actualizado.");
+
+    }else{
+
+        datos.productos.unshift({
+            id:id(),
+            nombre,
+            precio,
+            costo,
+            stock,
+            creado:fechaActual()
+        });
+
+        mostrarToast("Producto agregado.");
+    }
+
+    guardarDatos();
+
+    cerrarModal("modalProducto");
+
+    renderTodo();
+}
+
+
+function renderProductos(){
+
+    const contenedor =
+        document.getElementById("listaProductos");
+
+    const buscar =
+        (document.getElementById("buscarProducto")?.value || "")
+        .toLowerCase()
+        .trim();
+
+    let productos = datos.productos;
+
+    if(buscar){
+
+        productos = productos.filter(p =>
+            `${p.nombre}`
+                .toLowerCase()
+                .includes(buscar)
+        );
+    }
+
+    if(!productos.length){
+
+        contenedor.innerHTML = `
+            <div class="empty">
+                No hay productos registrados.
+            </div>
+        `;
+
+        return;
+    }
+
+    contenedor.innerHTML = productos.map(p => {
+
+        const margen =
+            numero(p.precio) - numero(p.costo);
+
+        return `
+            <div class="item">
+
+                <div class="item-top">
+
+                    <div>
+                        <div class="item-title">
+                            📦 ${escapar(p.nombre)}
+                        </div>
+
+                        <div class="item-meta">
+                            Precio: ${dinero(p.precio)}<br>
+                            Costo: ${dinero(p.costo)}<br>
+                            Margen: ${dinero(margen)}
+                        </div>
+                    </div>
+
+                    <span class="badge ${
+                        p.stock <= 3
+                        ? "badge-orange"
+                        : "badge-green"
+                    }">
+                        Stock: ${p.stock}
+                    </span>
+
+                </div>
+
+                <div class="item-buttons">
+
+                    <button class="small-btn"
+                        onclick="abrirProducto('${p.id}')">
+                        Editar
+                    </button>
+
+                    <button class="small-btn"
+                        onclick="eliminarProducto('${p.id}')">
+                        Eliminar
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+function eliminarProducto(productoId){
+
+    const p = productoPorId(productoId);
+
+    if(!p) return;
+
+    if(!confirm(`¿Eliminar ${p.nombre}?`)) return;
+
+    datos.productos =
+        datos.productos.filter(p => p.id !== productoId);
+
+    guardarDatos();
+
+    renderTodo();
+
+    mostrarToast("Producto eliminado.");
+}
+
+
+/* =========================================================
+   VENTAS
+========================================================= */
+
+function abrirVenta(){
+
+    document.getElementById("ventaProducto").value = "";
+    document.getElementById("ventaDescripcion").value = "";
+    document.getElementById("ventaTotal").value = "";
+    document.getElementById("ventaTipo").value = "contado";
+    document.getElementById("ventaCliente").value = "";
+    document.getElementById("ventaPagoInicial").value = "0";
+    document.getElementById("ventaCosto").value = "0";
+
+    llenarSelectProductos();
+    llenarSelectClientes();
+
+    cambiarTipoVenta();
+
+    abrirModal("modalVenta");
+}
+
+
+function llenarSelectProductos(){
+
+    const select =
+        document.getElementById("ventaProducto");
+
+    select.innerHTML =
+        `<option value="">Venta manual</option>`;
+
+    datos.productos.forEach(p => {
+
+        select.innerHTML += `
+            <option value="${p.id}">
+                ${escapar(p.nombre)} — ${dinero(p.precio)}
+            </option>
+        `;
+    });
+}
+
+
+function llenarSelectClientes(){
+
+    const select =
+        document.getElementById("ventaCliente");
+
+    select.innerHTML =
+        `<option value="">Seleccionar cliente</option>`;
+
+    datos.clientes.forEach(c => {
+
+        select.innerHTML += `
+            <option value="${c.id}">
+                ${escapar(c.nombre)}
+            </option>
+        `;
+    });
+}
+
+
+function seleccionarProductoVenta(){
+
+    const productoId =
+        document.getElementById("ventaProducto").value;
+
+    if(!productoId){
+
+        document.getElementById("ventaDescripcion").value = "";
+        document.getElementById("ventaTotal").value = "";
+        document.getElementById("ventaCosto").value = "0";
+
+        return;
+    }
+
+    const p = productoPorId(productoId);
+
+    if(!p) return;
+
+    document.getElementById("ventaDescripcion").value = p.nombre;
+    document.getElementById("ventaTotal").value = p.precio;
+    document.getElementById("ventaCosto").value = p.costo;
+}
+
+
+function cambiarTipoVenta(){
+
+    const tipo =
+        document.getElementById("ventaTipo").value;
+
+    const esFiado = tipo === "fiado";
+
+    document.getElementById("campoClienteVenta")
+        .style.display = esFiado ? "block" : "none";
+
+    document.getElementById("campoPagoInicial")
+        .style.display = esFiado ? "block" : "none";
+
+    if(!esFiado){
+
+        document.getElementById("ventaPagoInicial").value = "0";
+    }
+}
+
+
+function guardarVenta(){
+
+    const productoId =
+        document.getElementById("ventaProducto").value;
+
+    const descripcion =
+        document.getElementById("ventaDescripcion").value.trim();
+
+    const total =
+        numero(document.getElementById("ventaTotal").value);
+
+    const tipo =
+        document.getElementById("ventaTipo").value;
+
+    const clienteId =
+        document.getElementById("ventaCliente").value;
+
+    const pagoInicial =
+        numero(document.getElementById("ventaPagoInicial").value);
+
+    const costo =
+        numero(document.getElementById("ventaCosto").value);
+
+    if(!descripcion){
+
+        mostrarToast("Escribe una descripción.");
+
+        return;
+    }
+
+    if(total <= 0){
+
+        mostrarToast("El total debe ser mayor a $0.");
+
+        return;
+    }
+
+    if(tipo === "fiado" && !clienteId){
+
+        mostrarToast("Selecciona un cliente para el fiado.");
+
+        return;
+    }
+
+    if(pagoInicial < 0 || pagoInicial > total){
+
+        mostrarToast("El pago inicial no es válido.");
+
+        return;
+    }
+
+    const ventaId = id();
+
+    const venta = {
+
+        id:ventaId,
+
+        productoId:productoId || null,
+
+        descripcion,
+
+        total,
+
+        costo,
+
+        tipo,
+
+        clienteId:tipo === "fiado" ? clienteId : null,
+
+        fecha:fechaActual()
+    };
+
+    datos.ventas.unshift(venta);
+
+    /*
+       En contado el pago es automático.
+       En fiado solamente se registra el pago inicial.
+    */
+
+    if(tipo === "contado"){
+
+        datos.pagos.push({
+
+            id:id(),
+
+            ventaId,
+
+            cantidad:total,
+
+            fecha:fechaActual(),
+
+            tipo:"venta_contado"
+        });
+
+    }else if(pagoInicial > 0){
+
+        datos.pagos.push({
+
+            id:id(),
+
+            ventaId,
+
+            cantidad:pagoInicial,
+
+            fecha:fechaActual(),
+
+            tipo:"pago_inicial"
+        });
+    }
+
+    /*
+       Reducir inventario cuando se utiliza
+       un producto registrado.
+    */
+
+    if(productoId){
+
+        const p = productoPorId(productoId);
+
+        if(p && numero(p.stock) > 0){
+
+            p.stock = Math.max(
+                0,
+                numero(p.stock) - 1
+            );
+        }
+    }
+
+    guardarDatos();
+
+    cerrarModal("modalVenta");
+
+    renderTodo();
+
+    mostrarToast(
+        tipo === "fiado"
+        ? "Fiado registrado correctamente."
+        : "Venta registrada correctamente."
+    );
+}
+
+
+function renderVentas(){
+
+    const contenedor =
+        document.getElementById("listaVentas");
+
+    const buscar =
+        (document.getElementById("buscarVenta")?.value || "")
+        .toLowerCase()
+        .trim();
+
+    let ventas = datos.ventas;
+
+    if(buscar){
+
+        ventas = ventas.filter(v => {
+
+            const c = clientePorId(v.clienteId);
+
+            return `${v.descripcion} ${c?.nombre || ""} ${v.tipo}`
+                .toLowerCase()
+                .includes(buscar);
+        });
+    }
+
+    if(!ventas.length){
+
+        contenedor.innerHTML = `
+            <div class="empty">
+                No hay ventas registradas.
+            </div>
+        `;
+
+        return;
+    }
+
+    contenedor.innerHTML = ventas.map(v => {
+
+        const cliente =
+            clientePorId(v.clienteId);
+
+        const pagado =
+            totalPagadoVenta(v);
+
+        const pendiente =
+            pendienteVenta(v);
+
+        const ganancia =
+            numero(v.total) - numero(v.costo);
+
+        return `
+            <div class="item">
+
+                <div class="item-top">
+
+                    <div>
+
+                        <div class="item-title">
+                            ${v.tipo === "fiado" ? "📒" : "💰"}
+                            ${escapar(v.descripcion)}
+                        </div>
+
+                        <div class="item-meta">
+                            ${fechaTexto(v.fecha)}
+                            ${cliente ? "<br>Cliente: " + escapar(cliente.nombre) : ""}
+                            <br>Total: ${dinero(v.total)}
+                            <br>Costo: ${dinero(v.costo)}
+                            <br>Ganancia: ${dinero(ganancia)}
+                        </div>
+
+                    </div>
+
+                    <span class="badge ${
+                        pendiente > 0
+                        ? "badge-orange"
+                        : "badge-green"
+                    }">
+                        ${
+                            pendiente > 0
+                            ? "Pendiente"
+                            : "Pagada"
+                        }
+                    </span>
+
+                </div>
+
+                ${
+                    v.tipo === "fiado"
+                    ? `
+                    <div style="margin-top:9px;">
+
+                        <div class="item-meta">
+                            Pagado: ${dinero(pagado)}
+                        </div>
+
+                        <strong class="${
+                            pendiente > 0 ? "orange" : "green"
+                        }">
+                            Pendiente: ${dinero(pendiente)}
+                        </strong>
+
+                    </div>
+                    `
+                    : ""
+                }
+
+                <div class="item-buttons">
+
+                    ${
+                        pendiente > 0
+                        ? `
+                        <button class="small-btn"
+                            onclick="abrirPago('${v.id}')">
+                            Registrar pago
+                        </button>
+                        `
+                        : ""
+                    }
+
+                    ${
+                        cliente?.telefono && pendiente > 0
+                        ? `
+                        <button class="small-btn"
+                            onclick="whatsappCliente('${cliente.id}')">
+                            WhatsApp
+                        </button>
+                        `
+                        : ""
+                    }
+
+                    <button class="small-btn"
+                        onclick="eliminarVenta('${v.id}')">
+                        Eliminar
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+function eliminarVenta(ventaId){
+
+    const venta =
+        datos.ventas.find(v => v.id === ventaId);
+
+    if(!venta) return;
+
+    if(!confirm(
+        "¿Eliminar esta venta y sus pagos?"
+    )) return;
+
+    datos.ventas =
+        datos.ventas.filter(v => v.id !== ventaId);
+
+    datos.pagos =
+        datos.pagos.filter(p => p.ventaId !== ventaId);
+
+    guardarDatos();
+
+    renderTodo();
+
+    mostrarToast("Venta eliminada.");
+}
+
+
+/* =========================================================
+   PAGOS
+========================================================= */
+
+function abrirPago(ventaId){
+
+    const venta =
+        datos.ventas.find(v => v.id === ventaId);
+
+    if(!venta) return;
+
+    const pendiente =
+        pendienteVenta(venta);
+
+    if(pendiente <= 0){
+
+        mostrarToast("Esta venta ya está pagada.");
+
+        return;
+    }
+
+    ventaPagoId = ventaId;
+
+    const cliente =
+        clientePorId(venta.clienteId);
+
+    document.getElementById("infoPago").innerHTML = `
+        <strong>${escapar(venta.descripcion)}</strong><br>
+        ${cliente ? "Cliente: " + escapar(cliente.nombre) + "<br>" : ""}
+        Total: ${dinero(venta.total)}<br>
+        Pagado: ${dinero(totalPagadoVenta(venta))}<br>
+        <strong>Pendiente: ${dinero(pendiente)}</strong>
+    `;
+
+    document.getElementById("pagoCantidad").value =
+        pendiente.toFixed(2);
+
+    abrirModal("modalPago");
+}
+
+
+function guardarPago(){
+
+    if(!ventaPagoId) return;
+
+    const venta =
+        datos.ventas.find(v => v.id === ventaPagoId);
+
+    if(!venta) return;
+
+    const cantidad =
+        numero(document.getElementById("pagoCantidad").value);
+
+    const pendiente =
+        pendienteVenta(venta);
+
+    if(cantidad <= 0){
+
+        mostrarToast("La cantidad debe ser mayor a $0.");
+
+        return;
+    }
+
+    if(cantidad > pendiente){
+
+        mostrarToast(
+            `El máximo que puede registrar es ${dinero(pendiente)}.`
+        );
+
+        return;
+    }
+
+    datos.pagos.push({
+
+        id:id(),
+
+        ventaId:ventaPagoId,
+
+        cantidad,
+
+        fecha:fechaActual(),
+
+        tipo:"pago"
+    });
+
+    guardarDatos();
+
+    ventaPagoId = null;
+
+    cerrarModal("modalPago");
+
+    renderTodo();
+
+    mostrarToast("Pago registrado.");
+}
+
+
+/* =========================================================
+   GASTOS
+========================================================= */
+
+function abrirGasto(){
+
+    document.getElementById("gastoDescripcion").value = "";
+    document.getElementById("gastoCantidad").value = "";
+    document.getElementById("gastoCategoria").value = "Material";
+
+    abrirModal("modalGasto");
+}
+
+
+function guardarGasto(){
+
+    const descripcion =
+        document.getElementById("gastoDescripcion")
+        .value.trim();
+
+    const cantidad =
+        numero(document.getElementById("gastoCantidad").value);
+
+    const categoria =
+        document.getElementById("gastoCategoria").value;
+
+    if(!descripcion){
+
+        mostrarToast("Escribe la descripción del gasto.");
+
+        return;
+    }
+
+    if(cantidad <= 0){
+
+        mostrarToast("La cantidad debe ser mayor a $0.");
+
+        return;
+    }
+
+    datos.gastos.unshift({
+
+        id:id(),
+
+        descripcion,
+
+        cantidad,
+
+        categoria,
+
+        fecha:fechaActual()
+    });
+
+    guardarDatos();
+
+    cerrarModal("modalGasto");
+
+    renderTodo();
+
+    mostrarToast("Gasto registrado.");
+}
+
+
+function renderGastos(){
+
+    const contenedor =
+        document.getElementById("listaGastos");
+
+    if(!datos.gastos.length){
+
+        contenedor.innerHTML = `
+            <div class="empty">
+                No hay gastos registrados.
+            </div>
+        `;
+
+        return;
+    }
+
+    contenedor.innerHTML =
+        datos.gastos.map(g => {
+
+            return `
+                <div class="item">
+
+                    <div class="item-top">
+
+                        <div>
+
+                            <div class="item-title">
+                                💸 ${escapar(g.descripcion)}
+                            </div>
+
+                            <div class="item-meta">
+                                ${fechaTexto(g.fecha)}<br>
+                                Categoría: ${escapar(g.categoria)}
+                            </div>
+
+                        </div>
+
+                        <strong class="red">
+                            -${dinero(g.cantidad)}
+                        </strong>
+
+                    </div>
+
+                    <div class="item-buttons">
+
+                        <button class="small-btn"
+                            onclick="eliminarGasto('${g.id}')">
+                            Eliminar
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+function eliminarGasto(gastoId){
+
+    if(!confirm("¿Eliminar este gasto?")) return;
+
+    datos.gastos =
+        datos.gastos.filter(g => g.id !== gastoId);
+
+    guardarDatos();
+
+    renderTodo();
+
+    mostrarToast("Gasto eliminado.");
+}
+
+
+/* =========================================================
+   REPORTES
+========================================================= */
+
+function calcularResumen(){
+
+    const ventas =
+        datos.ventas.reduce(
+            (sum,v) => sum + numero(v.total),
+            0
+        );
+
+    const cobrado =
+        datos.pagos.reduce(
+            (sum,p) => sum + numero(p.cantidad),
+            0
+        );
+
+    const pendiente =
+        datos.ventas.reduce(
+            (sum,v) => sum + pendienteVenta(v),
+            0
+        );
+
+    const gastos =
+        datos.gastos.reduce(
+            (sum,g) => sum + numero(g.cantidad),
+            0
+        );
+
+    const costos =
+        datos.ventas.reduce(
+            (sum,v) => sum + numero(v.costo),
+            0
+        );
+
+    const gananciaBruta =
+        ventas - costos;
+
+    const ganancia =
+        gananciaBruta - gastos;
+
+    return {
+        ventas,
+        cobrado,
+        pendiente,
+        gastos,
+        costos,
+        ganancia
+    };
+}
+
+
+function renderReportes(){
+
+    const r = calcularResumen();
+
+    document.getElementById("reporteVentas")
+        .textContent = dinero(r.ventas);
+
+    document.getElementById("reporteCobrado")
+        .textContent = dinero(r.cobrado);
+
+    document.getElementById("reportePendiente")
+        .textContent = dinero(r.pendiente);
+
+    document.getElementById("reporteGastos")
+        .textContent = dinero(r.gastos);
+
+    document.getElementById("reporteGanancia")
+        .textContent = dinero(r.ganancia);
+
+    renderReporteFechas();
+}
+
+
+function renderReporteFechas(){
+
+    const desde =
+        document.getElementById("fechaDesde").value;
+
+    const hasta =
+        document.getElementById("fechaHasta").value;
+
+    if(!desde && !hasta){
+
+        document.getElementById("resultadoFechas").innerHTML = `
+            <div class="empty">
+                Selecciona un rango de fechas.
+            </div>
+        `;
+
+        return;
+    }
+
+    const inicio =
+        desde ? new Date(desde + "T00:00:00") : null;
+
+    const fin =
+        hasta ? new Date(hasta + "T23:59:59") : null;
+
+    const ventas =
+        datos.ventas.filter(v => {
+
+            const d = new Date(v.fecha);
+
+            if(inicio && d < inicio) return false;
+            if(fin && d > fin) return false;
+
+            return true;
+        });
+
+    const gastos =
+        datos.gastos.filter(g => {
+
+            const d = new Date(g.fecha);
+
+            if(inicio && d < inicio) return false;
+            if(fin && d > fin) return false;
+
+            return true;
+        });
+
+    const totalVentas =
+        ventas.reduce(
+            (sum,v) => sum + numero(v.total),
+            0
+        );
+
+    const totalCostos =
+        ventas.reduce(
+            (sum,v) => sum + numero(v.costo),
+            0
+        );
+
+    const totalGastos =
+        gastos.reduce(
+            (sum,g) => sum + numero(g.cantidad),
+            0
+        );
+
+    const ganancia =
+        totalVentas -
+        totalCostos -
+        totalGastos;
+
+    document.getElementById("resultadoFechas").innerHTML = `
+
+        <div class="kpi">
+            <span>Ventas</span>
+            <strong>${dinero(totalVentas)}</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Costos</span>
+            <strong>${dinero(totalCostos)}</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Gastos</span>
+            <strong>${dinero(totalGastos)}</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Ganancia</span>
+            <strong class="green">${dinero(ganancia)}</strong>
+        </div>
+
+        <div class="kpi">
+            <span>Número de ventas</span>
+            <strong>${ventas.length}</strong>
+        </div>
+
+    `;
+}
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+function renderInicio(){
+
+    const r = calcularResumen();
+
+    document.getElementById("totalVentas")
+        .textContent = dinero(r.ventas);
+
+    document.getElementById("totalCobrado")
+        .textContent = dinero(r.cobrado);
+
+    document.getElementById("totalPendiente")
+        .textContent = dinero(r.pendiente);
+
+    document.getElementById("totalGastos")
+        .textContent = dinero(r.gastos);
+
+    document.getElementById("cantidadClientes")
+        .textContent = datos.clientes.length;
+
+    document.getElementById("cantidadProductos")
+        .textContent = datos.productos.length;
+
+    document.getElementById("cantidadVentas")
+        .textContent = datos.ventas.length;
+
+    document.getElementById("gananciaEstimada")
+        .textContent = dinero(r.ganancia);
+
+    renderUltimosMovimientos();
+}
+
+
+function renderUltimosMovimientos(){
+
+    const contenedor =
+        document.getElementById("ultimosMovimientos");
+
+    const movimientos = [];
+
+    datos.ventas.forEach(v => {
+
+        movimientos.push({
+            fecha:v.fecha,
+            tipo:"venta",
+            texto:v.descripcion,
+            cantidad:v.total
+        });
+    });
+
+    datos.gastos.forEach(g => {
+
+        movimientos.push({
+            fecha:g.fecha,
+            tipo:"gasto",
+            texto:g.descripcion,
+            cantidad:g.cantidad
+        });
+    });
+
+    datos.pagos.forEach(p => {
+
+        const v =
+            datos.ventas.find(v => v.id === p.ventaId);
+
+        if(v){
+
+            movimientos.push({
+                fecha:p.fecha,
+                tipo:"pago",
+                texto:"Pago: " + v.descripcion,
+                cantidad:p.cantidad
+            });
+        }
+    });
+
+    movimientos.sort(
+        (a,b) =>
+            new Date(b.fecha) -
+            new Date(a.fecha)
+    );
+
+    const ultimos =
+        movimientos.slice(0,8);
+
+    if(!ultimos.length){
+
+        contenedor.innerHTML = `
+            <div class="empty">
+                Todavía no hay movimientos.
+            </div>
+        `;
+
+        return;
+    }
+
+    contenedor.innerHTML =
+        ultimos.map(m => {
+
+            let icono = "💰";
+            let clase = "blue";
+            let signo = "+";
+
+            if(m.tipo === "gasto"){
+
+                icono = "💸";
+                clase = "red";
+                signo = "-";
+            }
+
+            if(m.tipo === "pago"){
+
+                icono = "💳";
+                clase = "green";
+            }
+
+            return `
+                <div class="item">
+
+                    <div class="item-top">
+
+                        <div>
+
+                            <div class="item-title">
+                                ${icono}
+                                ${escapar(m.texto)}
+                            </div>
+
+                            <div class="item-meta">
+                                ${fechaTexto(m.fecha)}
+                            </div>
+
+                        </div>
+
+                        <strong class="${clase}">
+                            ${signo}${dinero(m.cantidad)}
+                        </strong>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+function abrirConfiguracion(){
+
+    document.getElementById("nombreNegocio").value =
+        datos.negocio.nombre || "Mi Negocio Fácil";
+
+    abrirModal("modalConfig");
+}
+
+
+function guardarConfiguracion(){
+
+    const nombre =
+        document.getElementById("nombreNegocio")
+        .value.trim();
+
+    datos.negocio.nombre =
+        nombre || "Mi Negocio Fácil";
+
+    guardarDatos();
+
+    document.querySelector(".logo").innerHTML =
+        `💼 ${escapar(datos.negocio.nombre)}`;
+
+    cerrarModal("modalConfig");
+
+    mostrarToast("Configuración guardada.");
+}
+
+
+/* =========================================================
+   MODO OSCURO
+========================================================= */
+
+function toggleDark(){
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "mi_negocio_dark",
+        document.body.classList.contains("dark")
+            ? "1"
+            : "0"
+    );
+}
+
+
+function cargarTema(){
+
+    if(localStorage.getItem("mi_negocio_dark") === "1"){
+
+        document.body.classList.add("dark");
+    }
+}
+
+
+/* =========================================================
+   COPIA DE SEGURIDAD
+========================================================= */
+
+function exportarDatos(){
+
+    const copia = {
+        version:1,
+        exportado:fechaActual(),
+        datos
+    };
+
+    const contenido =
+        JSON.stringify(copia,null,2);
+
+    const blob =
+        new Blob(
+            [contenido],
+            {type:"application/json"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    const fecha =
+        soloFecha(new Date());
+
+    a.href = url;
+
+    a.download =
+        `mi-negocio-facil-${fecha}.json`;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    mostrarToast(
+        "Copia de seguridad creada."
+    );
+}
+
+
+function importarDatos(event){
+
+    const archivo =
+        event.target.files?.[0];
+
+    if(!archivo) return;
+
+    const lector =
+        new FileReader();
+
+    lector.onload = function(){
+
+        try{
+
+            const contenido =
+                JSON.parse(lector.result);
+
+            if(!contenido.datos){
+
+                throw new Error(
+                    "Archivo no válido."
+                );
+            }
+
+            if(!confirm(
+                "Importar esta copia reemplazará los datos actuales. ¿Continuar?"
+            )){
+
+                event.target.value = "";
+
+                return;
+            }
+
+            datos = {
+                negocio:contenido.datos.negocio || {
+                    nombre:"Mi Negocio Fácil",
+                    moneda:"MXN"
+                },
+
+                clientes:Array.isArray(
+                    contenido.datos.clientes
+                )
+                ? contenido.datos.clientes
+                : [],
+
+                productos:Array.isArray(
+                    contenido.datos.productos
+                )
+                ? contenido.datos.productos
+                : [],
+
+                ventas:Array.isArray(
+                    contenido.datos.ventas
+                )
+                ? contenido.datos.ventas
+                : [],
+
+                pagos:Array.isArray(
+                    contenido.datos.pagos
+                )
+                ? contenido.datos.pagos
+                : [],
+
+                gastos:Array.isArray(
+                    contenido.datos.gastos
+                )
+                ? contenido.datos.gastos
+                : []
+            };
+
+            guardarDatos();
+
+            renderTodo();
+
+            mostrarToast(
+                "Datos restaurados correctamente."
+            );
+
+        }catch(error){
+
+            console.error(error);
+
+            alert(
+                "No se pudo importar el archivo. " +
+                "Comprueba que sea una copia creada por esta aplicación."
+            );
+        }
+
+        event.target.value = "";
+    };
+
+    lector.readAsText(archivo);
+}
+
+
+function borrarTodo(){
+
+    if(!confirm(
+        "ADVERTENCIA: esto eliminará TODOS los clientes, productos, ventas, pagos y gastos de este dispositivo. ¿Continuar?"
+    )) return;
+
+    if(!confirm(
+        "Esta acción no se puede deshacer. ¿Realmente quieres borrar todo?"
+    )) return;
+
+    datos = datosIniciales();
+
+    guardarDatos();
+
+    cerrarModal("modalConfig");
+
+    renderTodo();
+
+    mostrarToast(
+        "Todos los datos fueron eliminados."
+    );
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+function mostrarToast(mensaje){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = mensaje;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },3000);
+}
+
+
+/* =========================================================
+   RENDER GENERAL
+========================================================= */
+
+function renderTodo(){
+
+    renderInicio();
+    renderVentas();
+    renderClientes();
+    renderProductos();
+    renderGastos();
+    renderReportes();
+
+    document.querySelector(".logo").innerHTML =
+        `💼 ${escapar(datos.negocio.nombre || "Mi Negocio Fácil")}`;
+}
+
+
+/* =========================================================
+   CERRAR MODALES AL TOCAR FONDO
+========================================================= */
+
+document.querySelectorAll(".modal")
+.forEach(modal => {
+
+    modal.addEventListener("click",function(e){
+
+        if(e.target === modal){
+
+            modal.classList.remove("show");
+        }
+    });
+});
+
+
+/* =========================================================
+   TECLA ESC
+========================================================= */
+
+document.addEventListener("keydown",function(e){
+
+    if(e.key === "Escape"){
+
+        document.querySelectorAll(".modal.show")
+            .forEach(m => m.classList.remove("show"));
+    }
+});
+
+
+/* =========================================================
+   INICIALIZACIÓN
+========================================================= */
+
+cargarTema();
+
+renderTodo();
+
+</script>
+
+</body>
+</html>

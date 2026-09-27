@@ -1,0 +1,14 @@
+{
+  "name": "mi-negocio-facil",
+  "version": "1.0.0",
+  "description": "Mi Negocio Fácil — administra ventas, clientes, productos, gastos y cuentas por cobrar desde tu celular.",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p www && cp index.html www/index.html"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.0",
+    "@capacitor/cli": "^7.4.0",
+    "@capacitor/core": "^7.4.0"
+  }
+}

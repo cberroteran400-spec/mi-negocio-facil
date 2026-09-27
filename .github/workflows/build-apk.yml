@@ -28,6 +28,12 @@ jobs:
       - name: Crear proyecto Android
         run: npx cap add android
 
+      - name: Generar icono desde icon.png
+        run: |
+          npm install -D @capacitor/assets
+          mkdir -p resources
+          cp icon.png resources/icon.png
+          npx capacitor-assets generate --android
       - name: Sincronizar Capacitor
         run: npx cap sync android
 
